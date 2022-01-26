@@ -1,38 +1,60 @@
 {
-  "name": "cloud-segmentation",
+  "name": "demo",
   "authentication_required": true,
   "images": {
-      "path": {
-          "Sentinel1": "images/{id}/s1.tif",
-          "Sentinel2": "images/{id}/s2.tif"
-      },
-      "shape": [512, 512],
-      "thumbnails": "images/{id}/thumbnail.png",
-      "metadata": "images/{id}/metadata.json"
+    "path": {
+      "B1": "images/{id}/input/B1.tif",
+      "B2": "images/{id}/input/B2.tif",
+      "B3": "images/{id}/input/B3.tif",
+      "B4": "images/{id}/input/B4.tif",
+      "B5": "images/{id}/input/B5.tif",
+      "B6": "images/{id}/input/B6.tif",
+      "B7": "images/{id}/input/B7.tif",
+      "B8": "images/{id}/input/B8.tif",
+      "B8A": "images/{id}/input/B8A.tif",
+      "B9": "images/{id}/input/B9.tif",
+      "B10": "images/{id}/input/B10.tif",
+      "B10_threshold": "images/{id}/input/B10_threshold.tif",
+      "B11": "images/{id}/input/B11.tif",
+      "B12": "images/{id}/input/B12.tif",
+      "CDI": "images/{id}/input/CDI.tif",
+      "VV": "images/{id}/input/VV.tif",
+      "VH": "images/{id}/input/VH.tif",
+      "angle": "images/{id}/input/angle.tif",
+      "elevation": "images/{id}/input/elevation.tif",
+      "landuse": "images/{id}/input/landuse.tif",
+      "s2cloudness": "images/{id}/target/s2cloudness_prob.tif",
+      "s2cloudness_reclass": "images/{id}/target/s2cloudness_reclass.tif",
+      "sen2cor": "images/{id}/target/sen2cor_real.tif",
+      "sen2cor_reclass": "images/{id}/target/sen2cor_reclass.tif"
+    },
+    "shape": [511, 511],
+    "metadata": "images/{id}/metadata.json",
+    "thumbnails": "images/{id}/thumbnails/thumbnail.png"
   },
   "segmentation": {
-      "path": "images/{id}/mask.png",
-      "mask_encoding": "rgb",
-      "mask_area": [64, 64, 448, 448],
-      "score": "f1",
-      "pending_threshold": 1,
-      "test_images": null
+    "path": "images/{id}/target/manual.png",
+    "mask_encoding": "rgb",
+    "mask_area": [0, 0, 511, 511],
+    "score": "f1",
+    "pending_threshold": 1,
+    "test_images": null
   },
   "classes": [
     {
       "name": "Clear",
       "description": "All clear pixels, i.e. without cloud contamination or cloud shadows.",
-      "colour": [255,255,255,0],
-      "user_colour": [0,255,255,70]
+      "colour": [255, 255, 255, 0],
+      "user_colour": [0, 255, 255, 70]
     },
     {
       "name": "Thick Cloud",
       "description": "All cloudy pixels covered by thick clouds (does not include semi-transparent clouds or cloud shadows).",
-      "colour": [255,255,0,70]
+      "colour": [255, 255, 0, 70]
     },
     {
       "name": "Thin Cloud",
-      "description": "Clouds that are semi-transparent, i.e. one can see land or sea surfaces through them. If a thin cloud lays over a thick cloud, please paint them with the <i>Thick Cloud</i> class.",
+      "description": "Clouds that are semi-transparent, i.e. one can see land or sea surfaces through them. If a thin cloud lays over a thick cloud, please paint them with the <i>Thick Cloud<\/i> class.",
       "colour": [0, 255, 0, 70]
     },
     {
@@ -47,57 +69,73 @@
     }
   ],
   "views": {
-      "Cirrus": {
-          "description": "Cirrus and high clouds are red.",
-          "type": "image",
-          "data": "$Sentinel2.B11**0.8*5",
-          "cmap": "jet"
-      },
-      "Cirrus-Edges": {
-          "description": "Edges in the cirrus band",
-          "type": "image",
-          "data": "edges($Sentinel2.B11**0.8*5)*1.5",
-          "cmap": "gray"
-      },
-      "RGB": {
-          "description": "Normal RGB image.",
-          "type": "image",
-          "data": ["$Sentinel2.B5", "$Sentinel2.B3", "$Sentinel2.B2"]
-      },
-      "NRGB": {
-          "description": "Near-Infrared RGB image.",
-          "type": "image",
-          "data": ["$Sentinel2.B5*1.5", "$Sentinel2.B3*1.5", "$Sentinel2.B2*1.5"]
-      },
-      "Edges": {
-          "description": "Edges in the panchromatic bands",
-          "type": "image",
-          "data": "edges($Sentinel2.B2+$Sentinel2.B3+$Sentinel2.B4)",
-          "cmap": "gray"
-      },
-      "Snow": {
-          "description": "Small ice crystals in high-level clouds appear reddish-orange or peach, and thick ice snow looks vivid red (or red-orange). Bare soil appears bright cyan and vegetation seem greenish in the image. Water on the ground is very dark as it absorbs the SWIR and the red, but small (liquid) water drops in the clouds scatter the light equally in both visible and the SWIR, and therefore it appears white. Water Sediments are displayed as dark red.",
-          "type": "image",
-          "data": ["$Sentinel2.B1", "$Sentinel2.B12", "$Sentinel2.B13"]
-      },
-      "Sentinel-1": {
-          "description": "RGB of VH, VV and VH-VV.",
-          "type": "image",
-          "data": ["$Sentinel1.B1", "$Sentinel1.B2", "$Sentinel1.B1-$Sentinel1.B2"]
-      },
-      "Superpixels": {
-          "description": "Superpixels in the panchromatic bands",
-          "type": "image",
-          "data": "superpixels($Sentinel2.B2+$Sentinel2.B3+$Sentinel2.B4, sigma=4, min_size=100)",
-          "cmap": "jet"
-      },
-      "Bing": {
-          "description": "Aerial Imagery",
-          "type": "bingmap"
-      }
+    "Cirrus": {
+      "description": "Cirrus and high clouds are red.",
+      "type": "image",
+      "data": "$B10.B1**0.8*5",
+      "cmap": "jet"
+    },
+    "cloud_index": {
+      "description": "Cloud Displacement Index, clouds are red.",
+      "type": "image",
+      "data": "$CDI.B1*-1"
+    },
+    "RGB": {
+      "description": "Normal RGB image.",
+      "type": "image",
+      "data": ["$B5.B1", "$B3.B1", "$B2.B1"]
+    },
+    "NRGB": {
+      "description": "Near-Infrared RGB image.",
+      "type": "image",
+      "data": ["$B5.B1*1.5", "$B3.B1*1.5", "$B2.B1*1.5"]
+    },
+    "Snow": {
+      "description": "Small ice crystals in high-level clouds appear reddish-orange or peach, and thick ice snow looks vivid red (or red-orange). Bare soil appears bright cyan and vegetation seem greenish in the image. Water on the ground is very dark as it absorbs the SWIR and the red, but small (liquid) water drops in the clouds scatter the light equally in both visible and the SWIR, and therefore it appears white. Water Sediments are displayed as dark red.",
+      "type": "image",
+      "data": ["$B1.B1", "$B11.B1", "$B12.B1"]
+    },
+    "Sentinel-1": {
+      "description": "RGB of VH, VV and VH-VV.",
+      "type": "image",
+      "data": ["$VH.B1", "$VV.B1", "$VH.B1-$VV.B1"]
+    },
+    "Bing": {
+      "description": "Aerial Imagery",
+      "type": "bingmap"
+    },
+    "elevation": {
+      "description": "Elevation values",
+      "type": "image",
+      "data": "$elevation.B1"
+    },
+    "NDVI": {
+      "description": "NDVI values",
+      "type": "image",
+      "data": "($B5.B1 - $B4.B1)/($B5.B1 + $B4.B1)"
+    },
+    "CIRRUS_THRESHOLD": {
+      "description": "Cirrus threshold > 0.025",
+      "type": "image",
+      "data": "$B10_threshold.B1"
+    },
+    "sen2cloudness": {
+      "description": "Sen2Cloudness Probability",
+      "type": "image",
+      "data": "$s2cloudness.B1"
+    },
+    "sen2cloudness_reclass": {
+      "description": "Sen2Cloudness Probability Reclass (BLUE-->CLEAR; RED -> CLOUD)",
+      "type": "image",
+      "data": "$s2cloudness_reclass.B1"
+    },
+    "sen2cor": {
+      "description": "sen2cor classes (BLUE--> CLEAR; GREEN -> CLOUD; RED -> CLOUD SHADOW)",
+      "type": "image",
+      "data": "$sen2cor_reclass.B1"
+    }
   },
   "view_groups": {
-      "default": ["Cirrus", "RGB", "Snow"],
-      "radar": ["Sentinel-1"]
+    "default": ["Cirrus", "RGB", "Snow"]
   }
 }
