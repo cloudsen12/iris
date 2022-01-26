@@ -44,7 +44,7 @@ def parse_cmd_line():
         if not args.project:
             raise Exception("Label mode require a project file!")
     else:
-        raise Exception(f"Unknown mode '{args.mode}'!")
+        args.project = get_demo_file()
 
     return vars(args)
 
