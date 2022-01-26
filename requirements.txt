@@ -10,3 +10,4 @@ scipy
 scikit-image
 validate_email
 gunicorn
+matplotlib
