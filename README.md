@@ -12,4 +12,6 @@ Tool for manual image segmentation and classification of satellite imagery (or i
 
 This fantastic software has been created by [JohnMrziglod](https://github.com/JohnMrziglod) and [aliFrancis](https://github.com/aliFrancis). 
 
+Click [**here**](https://iris-cloudsen12.herokuapp.com/) to display a live demo. **user: admin;  password: admin**
+
 **Visit the official iris Github page:  https://github.com/ESA-PhiLab/iris**
